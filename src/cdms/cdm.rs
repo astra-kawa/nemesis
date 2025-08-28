@@ -13,7 +13,7 @@ pub struct ConjunctionDataMessage {
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct Header {
-    pub comment: Option<String>,
+    pub comment: Option<Vec<String>>,
     pub creation_date: Option<String>,
     pub originator: Option<String>,
     pub message_for: Option<String>,
@@ -38,7 +38,7 @@ pub struct RelativeMetadataData {
     pub relative_state_vector: Option<RelativeStateVector>,
     pub collision_probability: Option<f64>,
     pub collision_probability_method: Option<String>,
-    pub comment: Option<String>,
+    pub comment: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize)]
@@ -61,7 +61,7 @@ pub struct Segment {
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct SegmentMetadata {
-    pub comment: Option<String>,
+    pub comment: Option<Vec<String>>,
     pub object: Option<String>,
     pub object_designator: Option<String>,
     pub catalog_name: Option<String>,
