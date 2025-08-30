@@ -14,7 +14,7 @@ fn main() {
 fn App() -> Element {
     let cdm_result = cdms::xml_parsing::parse_cdm_xml_file("data/sample_cdm.xml");
     let text = match cdm_result {
-        Ok(cdm) => cdm.header.originator.unwrap(),
+        Ok(cdm) => format!("{cdm:?}"),
         Err(err) => format!("{err}"),
     };
 

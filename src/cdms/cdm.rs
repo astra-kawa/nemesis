@@ -23,7 +23,7 @@ pub struct Header {
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct Body {
     #[serde(rename = "relativeMetadataData")]
-    pub relative_metadata_data: Option<RelativeMetadataData>,
+    pub relative_metadata_data: RelativeMetadataData,
     #[serde(default, rename = "segment")]
     pub segment: Vec<Segment>,
 }
@@ -87,8 +87,13 @@ pub struct SegmentMetadata {
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct SegmentData {
     #[serde(rename = "stateVector")]
-    pub state_vector: Option<StateVector>,
-    // Additional fields exist in CDM but are optional and ignored here.
+    pub state_vector: StateVector,
+    #[serde(rename = "odParameters")]
+    pub od_parameters: Option<OdParameters>,
+    #[serde(rename = "additionalParameters")]
+    pub additional_parameters: Option<AdditionalParameters>,
+    #[serde(rename = "covarianceMatrix")]
+    pub covariance_matrix: Option<CovarianceMatrix>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize)]
@@ -100,4 +105,71 @@ pub struct StateVector {
     pub x_dot: Option<f64>,
     pub y_dot: Option<f64>,
     pub z_dot: Option<f64>,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub struct OdParameters {
+    pub comment: Option<Vec<String>>,
+    pub time_lastob_start: Option<String>,
+    pub time_lastob_end: Option<String>,
+    pub recommended_od_span: Option<f64>,
+    pub actual_od_span: Option<f64>,
+    pub obs_available: Option<u32>,
+    pub obs_used: Option<u32>,
+    pub residuals_accepted: Option<f64>,
+    pub weighted_rms: Option<f64>,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub struct AdditionalParameters {
+    pub comment: Option<Vec<String>>,
+    pub area_pc: Option<f64>,
+    pub cd_area_over_mass: Option<f64>,
+    pub cr_area_over_mass: Option<f64>,
+    pub thrust_acceleration: Option<f64>,
+    pub sedr: Option<f64>,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub struct CovarianceMatrix {
+    pub comment: Option<Vec<String>>,
+    pub cr_r: Option<f64>,
+    pub ct_r: Option<f64>,
+    pub ct_t: Option<f64>,
+    pub cn_r: Option<f64>,
+    pub cn_t: Option<f64>,
+    pub cn_n: Option<f64>,
+    pub crdot_r: Option<f64>,
+    pub crdot_t: Option<f64>,
+    pub crdot_n: Option<f64>,
+    pub crdot_rdot: Option<f64>,
+    pub ctdot_r: Option<f64>,
+    pub ctdot_t: Option<f64>,
+    pub ctdot_n: Option<f64>,
+    pub ctdot_rdot: Option<f64>,
+    pub ctdot_tdot: Option<f64>,
+    pub cndot_r: Option<f64>,
+    pub cndot_t: Option<f64>,
+    pub cndot_n: Option<f64>,
+    pub cndot_rdot: Option<f64>,
+    pub cndot_tdot: Option<f64>,
+    pub cndot_ndot: Option<f64>,
+    pub cdrg_r: Option<f64>,
+    pub cdrg_t: Option<f64>,
+    pub cdrg_n: Option<f64>,
+    pub cdrg_rdot: Option<f64>,
+    pub cdrg_tdot: Option<f64>,
+    pub cdrg_ndot: Option<f64>,
+    pub cdrg_drg: Option<f64>,
+    pub csrp_r: Option<f64>,
+    pub csrp_t: Option<f64>,
+    pub csrp_n: Option<f64>,
+    pub csrp_rdot: Option<f64>,
+    pub csrp_tdot: Option<f64>,
+    pub csrp_ndot: Option<f64>,
+    pub csrp_drg: Option<f64>,
+    pub csrp_srp: Option<f64>,
 }
