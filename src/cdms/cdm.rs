@@ -1,6 +1,6 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ConjunctionDataMessage {
     #[serde(rename = "@id")]
     pub id: Option<String>,
@@ -10,7 +10,7 @@ pub struct ConjunctionDataMessage {
     pub body: Body,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct Header {
     pub comment: Option<Vec<String>>,
@@ -20,7 +20,7 @@ pub struct Header {
     pub message_id: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Body {
     #[serde(rename = "relativeMetadataData")]
     pub relative_metadata_data: RelativeMetadataData,
@@ -28,7 +28,7 @@ pub struct Body {
     pub segment: Vec<Segment>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct RelativeMetadataData {
     pub tca: Option<String>,
@@ -41,7 +41,7 @@ pub struct RelativeMetadataData {
     pub comment: Option<Vec<String>>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct RelativeStateVector {
     pub relative_position_r: Option<f64>,
@@ -52,13 +52,13 @@ pub struct RelativeStateVector {
     pub relative_velocity_n: Option<f64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Segment {
     pub metadata: SegmentMetadata,
     pub data: SegmentData,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct SegmentMetadata {
     pub comment: Option<Vec<String>>,
@@ -84,7 +84,7 @@ pub struct SegmentMetadata {
     pub intrack_thrust: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SegmentData {
     #[serde(rename = "stateVector")]
     pub state_vector: StateVector,
@@ -96,7 +96,7 @@ pub struct SegmentData {
     pub covariance_matrix: Option<CovarianceMatrix>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct StateVector {
     pub x: Option<f64>,
@@ -107,7 +107,7 @@ pub struct StateVector {
     pub z_dot: Option<f64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct OdParameters {
     pub comment: Option<Vec<String>>,
@@ -121,7 +121,7 @@ pub struct OdParameters {
     pub weighted_rms: Option<f64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct AdditionalParameters {
     pub comment: Option<Vec<String>>,
@@ -132,7 +132,7 @@ pub struct AdditionalParameters {
     pub sedr: Option<f64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct CovarianceMatrix {
     pub comment: Option<Vec<String>>,

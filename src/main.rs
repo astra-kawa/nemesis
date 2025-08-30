@@ -1,5 +1,4 @@
 mod cdms;
-use crate::cdms::ConjunctionDataMessage;
 
 use dioxus::prelude::*;
 
@@ -12,13 +11,13 @@ fn main() {
 
 #[component]
 fn App() -> Element {
-    let cdm_result = cdms::xml_parsing::parse_cdm_xml_file("data/sample_cdm.xml");
+    let cdm_result =
+        use_server_future(|| cdms::xml_parsing::parse_cdm_xml_file("data/sample_cdm.xml".into()));
+
     let text = match cdm_result {
         Ok(cdm) => format!("{cdm:?}"),
         Err(err) => format!("{err}"),
     };
-
-    // let sample_text = format!("{:?}", cdm.header.originator);
 
     rsx! {
         document::Link { rel: "icon", href: FAVICON }
