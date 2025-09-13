@@ -14,12 +14,12 @@ impl FromStr for RawCdmError {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Unable to read XML file" | "XML file read failure" => Ok(RawCdmError::XmlRead),
-            "Unable to parse CDM file" | "XML deserialization failure" => {
-                Ok(RawCdmError::XmlDeserialize)
-            }
-            other => Err(format!("Unknown RawCdmError: {other}")),
+        if s == RawCdmError::XmlRead.to_string() {
+            Ok(RawCdmError::XmlRead)
+        } else if s == RawCdmError::XmlDeserialize.to_string() {
+            Ok(RawCdmError::XmlDeserialize)
+        } else {
+            Err(format!("Unknown RawCdmError: {s}"))
         }
     }
 }
