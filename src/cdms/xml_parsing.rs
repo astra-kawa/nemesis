@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use crate::cdms::RawCdmError;
 use crate::cdms::RawConjunctionDataMessage;
 use dioxus::prelude::*;
@@ -21,11 +23,13 @@ pub async fn parse_cdm_xml_file(
 ) -> Result<RawConjunctionDataMessage, ServerFnError<RawCdmError>> {
     let xml = match std::fs::read_to_string(path) {
         Ok(str) => str,
-        Err(_) => return Err(ServerFnError::new("Unable to read XML file".to_string())),
+        Err(_) => return Err(ServerFnError::WrappedServerError(RawCdmError::XmlRead)),
     };
 
     match parse_cdm_xml_str(&xml) {
         Ok(cdm) => Ok(cdm),
-        Err(_) => Err(ServerFnError::new("Unable to parse CDM file".to_string())),
+        Err(_) => Err(ServerFnError::WrappedServerError(
+            RawCdmError::XmlDeserialize,
+        )),
     }
 }
