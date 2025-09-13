@@ -1,34 +1,39 @@
-#[derive(Debug, Clone, PartialEq)]
-pub struct ConjunctionDataMessage {
-    pub id: String,
-    pub version: String,
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RawConjunctionDataMessage {
+    #[serde(rename = "@id")]
+    pub id: Option<String>,
+    #[serde(rename = "@version")]
+    pub version: Option<String>,
     pub header: Header,
     pub body: Body,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct Header {
     pub comment: Option<Vec<String>>,
-    pub creation_date: String,
-    pub originator: String,
+    pub creation_date: Option<String>,
+    pub originator: Option<String>,
     pub message_for: Option<String>,
-    pub message_id: String,
+    pub message_id: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Body {
+    #[serde(rename = "relativeMetadataData")]
     pub relative_metadata_data: RelativeMetadataData,
-    pub primary_segment: Segment,
-    pub secondary_segment: Segment,
+    #[serde(default, rename = "segment")]
+    pub segment: Vec<Segment>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct RelativeMetadataData {
-    pub comment: Option<Vec<String>>,
-    pub tca: String,
-    pub miss_distance: f64,
+    pub tca: Option<String>,
+    pub miss_distance: Option<f64>,
     pub relative_speed: Option<f64>,
-    pub relative_state_vector: Option<RelativeStateVector>,
     pub start_screen_period: Option<String>,
     pub stop_screen_period: Option<String>,
     pub screen_volume_frame: Option<String>,
@@ -37,11 +42,15 @@ pub struct RelativeMetadataData {
     pub screen_volume_z: Option<f64>,
     pub screen_entry_time: Option<String>,
     pub screen_exit_time: Option<String>,
+    #[serde(rename = "relativeStateVector")]
+    pub relative_state_vector: Option<RelativeStateVector>,
     pub collision_probability: Option<f64>,
     pub collision_probability_method: Option<String>,
+    pub comment: Option<Vec<String>>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct RelativeStateVector {
     pub relative_position_r: Option<f64>,
     pub relative_position_t: Option<f64>,
@@ -51,30 +60,30 @@ pub struct RelativeStateVector {
     pub relative_velocity_n: Option<f64>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Segment {
     pub metadata: SegmentMetadata,
     pub data: SegmentData,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct SegmentMetadata {
     pub comment: Option<Vec<String>>,
-    pub object: String,
-    pub object_designator: String,
-    pub catalog_name: String,
-    pub object_name: String,
-    pub international_designator: String,
+    pub object: Option<String>,
+    pub object_designator: Option<String>,
+    pub catalog_name: Option<String>,
+    pub object_name: Option<String>,
+    pub international_designator: Option<String>,
     pub object_type: Option<String>,
     pub operator_contact_position: Option<String>,
     pub operator_organization: Option<String>,
     pub operator_phone: Option<String>,
     pub operator_email: Option<String>,
-    pub ephemeris_name: String,
-    pub covariance_method: String,
-    pub maneuverable: String,
-    pub orbit_center: Option<String>,
-    pub ref_frame: String,
+    pub ephemeris_name: Option<String>,
+    pub covariance_method: Option<String>,
+    pub maneuverable: Option<String>,
+    pub ref_frame: Option<String>,
     pub gravity_model: Option<String>,
     pub atmospheric_model: Option<String>,
     pub n_body_perturbations: Option<String>,
@@ -83,27 +92,31 @@ pub struct SegmentMetadata {
     pub intrack_thrust: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SegmentData {
-    pub comment: Option<Vec<String>>,
+    #[serde(rename = "stateVector")]
     pub state_vector: StateVector,
+    #[serde(rename = "odParameters")]
     pub od_parameters: Option<OdParameters>,
+    #[serde(rename = "additionalParameters")]
     pub additional_parameters: Option<AdditionalParameters>,
-    pub covariance_matrix: CovarianceMatrix,
+    #[serde(rename = "covarianceMatrix")]
+    pub covariance_matrix: Option<CovarianceMatrix>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct StateVector {
-    pub comment: Option<Vec<String>>,
-    pub x: f64,
-    pub y: f64,
-    pub z: f64,
-    pub x_dot: f64,
-    pub y_dot: f64,
-    pub z_dot: f64,
+    pub x: Option<f64>,
+    pub y: Option<f64>,
+    pub z: Option<f64>,
+    pub x_dot: Option<f64>,
+    pub y_dot: Option<f64>,
+    pub z_dot: Option<f64>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct OdParameters {
     pub comment: Option<Vec<String>>,
     pub time_lastob_start: Option<String>,
@@ -116,7 +129,8 @@ pub struct OdParameters {
     pub weighted_rms: Option<f64>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct AdditionalParameters {
     pub comment: Option<Vec<String>>,
     pub area_pc: Option<f64>,
@@ -126,30 +140,31 @@ pub struct AdditionalParameters {
     pub sedr: Option<f64>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct CovarianceMatrix {
     pub comment: Option<Vec<String>>,
-    pub cr_r: f64,
-    pub ct_r: f64,
-    pub ct_t: f64,
-    pub cn_r: f64,
-    pub cn_t: f64,
-    pub cn_n: f64,
-    pub crdot_r: f64,
-    pub crdot_t: f64,
-    pub crdot_n: f64,
-    pub crdot_rdot: f64,
-    pub ctdot_r: f64,
-    pub ctdot_t: f64,
-    pub ctdot_n: f64,
-    pub ctdot_rdot: f64,
-    pub ctdot_tdot: f64,
-    pub cndot_r: f64,
-    pub cndot_t: f64,
-    pub cndot_n: f64,
-    pub cndot_rdot: f64,
-    pub cndot_tdot: f64,
-    pub cndot_ndot: f64,
+    pub cr_r: Option<f64>,
+    pub ct_r: Option<f64>,
+    pub ct_t: Option<f64>,
+    pub cn_r: Option<f64>,
+    pub cn_t: Option<f64>,
+    pub cn_n: Option<f64>,
+    pub crdot_r: Option<f64>,
+    pub crdot_t: Option<f64>,
+    pub crdot_n: Option<f64>,
+    pub crdot_rdot: Option<f64>,
+    pub ctdot_r: Option<f64>,
+    pub ctdot_t: Option<f64>,
+    pub ctdot_n: Option<f64>,
+    pub ctdot_rdot: Option<f64>,
+    pub ctdot_tdot: Option<f64>,
+    pub cndot_r: Option<f64>,
+    pub cndot_t: Option<f64>,
+    pub cndot_n: Option<f64>,
+    pub cndot_rdot: Option<f64>,
+    pub cndot_tdot: Option<f64>,
+    pub cndot_ndot: Option<f64>,
     pub cdrg_r: Option<f64>,
     pub cdrg_t: Option<f64>,
     pub cdrg_n: Option<f64>,
